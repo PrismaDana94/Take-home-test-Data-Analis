@@ -89,7 +89,7 @@ category_map = {
 df["product_category"] = df["product_category"].replace(category_map)
 
 # =====================
-# Total Revenue (Power BI Style)
+# Total Revenue 
 # =====================
 total_revenue = df.loc[df["sold_flag"] == 1, "product_retail_price"].sum()
 st.metric("Total Revenue (Power BI)", f"{total_revenue:,.2f}")
@@ -119,7 +119,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 # =====================
-# Revenue by Product Name (Top 10)
+# Revenue by Product Name
 # =====================
 rev_prod = sold_df.groupby('product_name')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
 fig3 = px.bar(rev_prod, x='revenue', y='product_name', orientation='h', title="Revenue by Product Name")
