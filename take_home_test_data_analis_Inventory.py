@@ -96,12 +96,25 @@ fig2 = px.bar(
 )
 st.plotly_chart(fig2, use_container_width=True)
 
+# =====================
+# Revenue by Product Name (Top 10)
+# =====================
+rev_prod = (
+    sold_df.groupby('product_name')["product_retail_price"]
+    .sum()
+    .reset_index()
+    .sort_values('product_retail_price', ascending=False)
+    .head(10)
+)
 
-# =====================
-# Revenue by Product Name
-# =====================
-rev_prod = sold_df.groupby('product_name')['revenue'].sum().reset_index().sort_values('revenue', ascending=False)
-fig3 = px.bar(rev_prod, x='revenue', y='product_name', orientation='h', title="Revenue by Product Name")
+fig3 = px.bar(
+    rev_prod,
+    x='product_retail_price',
+    y='product_name',
+    orientation='h',
+    title="Revenue by Product Name (Top 10)",
+    text_auto=".2s"
+)
 st.plotly_chart(fig3, use_container_width=True)
 
 # =====================
