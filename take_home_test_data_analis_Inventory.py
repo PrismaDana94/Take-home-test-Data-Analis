@@ -65,7 +65,7 @@ fig1 = px.line(
     y='revenue',
     markers=True,
     title="Revenue Trend by Year",
-    text='revenue'   # tampilkan angka revenue
+    text='revenue'   
 )
 
 # Format angka biar singkat, dan posisikan di atas titik
@@ -90,7 +90,7 @@ fig2 = px.bar(
     x='revenue',
     y='product_category',
     orientation='h',
-    title="Revenue by Product Category",
+    title="Top 10 Revenue by Product Category",
     text_auto=".2s"   # <--- angka otomatis di dalam bar
 )
 
@@ -114,7 +114,7 @@ fig3 = px.bar(
     x='product_retail_price',
     y='product_name',
     orientation='h',
-    title="Revenue by Product Name (Top 10)",
+    title="Top 10 Revenue by Product Name",
     text_auto=".2s"
 )
 st.plotly_chart(fig3, use_container_width=True)
@@ -128,7 +128,7 @@ brand_perf = sold_df.groupby('product_brand').agg(
 ).reset_index()
 brand_perf['Profit_Margin'] = (brand_perf['Total_Profit']/brand_perf['Total_Revenue']*100).round(2)
 
-st.subheader("Brand Performance")
+st.subheader("Top 10 Brand Performance")
 st.dataframe(brand_perf.sort_values('Total_Revenue', ascending=False).head(10))
 
 
