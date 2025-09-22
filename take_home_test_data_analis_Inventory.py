@@ -58,8 +58,21 @@ col4.metric("Inventory On Hand", f"{inventory_on_hand:,}")
 # Revenue Trend by Year
 # =====================
 rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
-fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
+
+fig1 = px.line(
+    rev_year,
+    x='year',
+    y='revenue',
+    markers=True,
+    title="Revenue Trend by Year",
+    text='revenue'   # tampilkan angka revenue
+)
+
+# Format angka biar singkat, dan posisikan di atas titik
+fig1.update_traces(texttemplate='%{text:.2s}', textposition='top center')
+
 st.plotly_chart(fig1, use_container_width=True)
+
 
 # =====================
 # Revenue by Category
