@@ -63,9 +63,13 @@ st.plotly_chart(fig1, use_container_width=True)
 # =====================
 # Revenue by Category
 # =====================
-rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
-fig2 = px.bar(rev_cat, x='revenue', y='product_category', orientation='h', title="Revenue by Product Category")
+rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index()\
+                 .sort_values('revenue', ascending=False).head(10)
+
+fig2 = px.bar(rev_cat, x='revenue', y='product_category', 
+              orientation='h', title="Revenue by Product Category (Top 10)")
 st.plotly_chart(fig2, use_container_width=True)
+
 
 # =====================
 # Revenue by Product Name (Top 10)
