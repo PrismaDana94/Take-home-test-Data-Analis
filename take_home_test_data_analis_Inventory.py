@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
+import gdown
+import os
 # =====================
 # Judul Aplikasi
 # =====================
@@ -12,13 +13,24 @@ st.markdown("Analisis inventory dan penjualan untuk mendapatkan insight actionab
 # =====================
 # Load Data
 # =====================
-# Pastikan file inventory_clean.parquet ada di repo / path yang sesuai
-df = pd.read_parquet("inventory_clean.parquet")
+@st.cache_data
+def load_data():
+    url = "https://drive.google.com/uc?id=1DBbnyF4AvHJQqj6JdfM3IOoH9lCwaoRj"
+    output = "inventory_clean.parquet"
+    
+    # Download file kalau belum ada di local
+    if not os.path.exists(output):
+        gdown.download(url, output, quiet=False)
+    
+    df = pd.read_parquet(output)
+    return df
 
-# Konversi kolom tanggal
+df = load_data()
+
+# =====================
+# Data Preparation
+# =====================
 df['sold_at'] = pd.to_datetime(df['sold_at'], errors='coerce')
-
-# Buat kolom turunan
 df['year'] = df['sold_at'].dt.year
 df['revenue'] = df['product_retail_price']
 df['profit'] = df['product_retail_price'] - df['cost']
