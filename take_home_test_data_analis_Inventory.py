@@ -61,7 +61,7 @@ fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Tre
 st.plotly_chart(fig1, use_container_width=True)
 
 # ===========================
-# Debug: tampilkan kategori unik sebelum & sesudah mapping
+# Debug kategori sebelum mapping
 # ===========================
 st.subheader("Debug - Product Categories Sebelum Mapping (Top 30)")
 st.dataframe(
@@ -69,37 +69,32 @@ st.dataframe(
     .value_counts(dropna=False)
     .head(30)
     .reset_index()
-    .rename(columns={'index': 'product_category', 'product_category': 'count'})
+    .rename(columns={"index": "product_category", "product_category": "count"})
 )
 
 # ===========================
 # Mapping kategori
 # ===========================
 category_map = {
-    # Gabung ke Sweaters
     "Outerwear & Coats": "Sweaters",
     "Fashion Hoodies & Sweatshirts": "Sweaters",
 
-    # Gabung ke Tops & Tees
     "Active": "Tops & Tees",
     "Shorts": "Tops & Tees",
 
-    # Gabung ke Pants
     "Pants & Capris": "Pants",
     "Jeans": "Pants",
 
-    # Gabung ke Suits & Sport Coats
     "Suits": "Suits & Sport Coats",
     "Blazers & Jackets": "Suits & Sport Coats",
     "Jumpsuits & Rompers": "Suits & Sport Coats"
 }
 
-# Pastikan tidak error jika ada NaN di kolom product_category
 sold_df['product_category'] = sold_df['product_category'].fillna("Unknown")
 sold_df['product_category'] = sold_df['product_category'].replace(category_map)
 
 # ===========================
-# Debug setelah mapping
+# Debug kategori setelah mapping
 # ===========================
 st.subheader("Debug - Product Categories Setelah Mapping (Top 30)")
 st.dataframe(
@@ -107,17 +102,32 @@ st.dataframe(
     .value_counts()
     .head(30)
     .reset_index()
-    .rename(columns={'index': 'product_category', 'product_category': 'count'})
+    .rename(columns={"index": "product_category", "product_category": "count"})
 )
-# Agregasi persis seperti DAX Power BI
-rev_cat_pbi_style = (sold_df[sold_df['sold_flag'] == 1]
-                     .groupby('product_category')['product_retail_price']
-                     .sum()
-                     .reset_index()
-                     .sort_values('product_retail_price', ascending=False))
 
-fig2 = px.bar(rev_cat_pbi_style, x='product_retail_price', y='product_category',
-              orientation='h', title="Revenue by Product Category (Top 10) [Power BI Style]")
+# ===========================
+# Agregasi persis seperti DAX Power BI
+# ===========================
+rev_cat_pbi_style = (
+    sold_df[sold_df['sold_flag'] == 1]
+    .groupby('product_category')['product_retail_price']
+    .sum()
+    .reset_index()
+    .sort_values('product_retail_price', ascending=False)
+)
+
+# ===========================
+# Visualisasi (Bar Chart)
+# ===========================
+import plotly.express as px
+
+fig2 = px.bar(
+    rev_cat_pbi_style,
+    x='product_retail_price',
+    y='product_category',
+    orientation='h',
+    title="Revenue by Product Category (Top 10) [Power BI Style]"
+)
 
 st.plotly_chart(fig2, use_container_width=True)
 
