@@ -60,21 +60,11 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
-# ===========================
-# Debug kategori sebelum mapping
-# ===========================
+import plotly.express as px
 
-# Debug sebelum mapping
-st.subheader("Debug - Product Categories Sebelum Mapping (Top 30)")
-st.dataframe(
-    sold_df['product_category']
-    .value_counts(dropna=False)
-    .head(30)
-    .reset_index()
-    .rename(columns={"index": "category_name", "product_category": "count"})
-)
-
-# Mapping
+# ===========================
+# Mapping Kategori
+# ===========================
 category_map = {
     "Outerwear & Coats": "Sweaters",
     "Fashion Hoodies & Sweatshirts": "Sweaters",
@@ -86,23 +76,14 @@ category_map = {
     "Blazers & Jackets": "Suits & Sport Coats",
     "Jumpsuits & Rompers": "Suits & Sport Coats"
 }
-sold_df['product_category'] = sold_df['product_category'].fillna("Unknown")
+
 sold_df['product_category'] = sold_df['product_category'].replace(category_map)
 
-# Debug setelah mapping
-st.subheader("Debug - Product Categories Setelah Mapping (Top 30)")
-st.dataframe(
-    sold_df['product_category']
-    .value_counts()
-    .head(30)
-    .reset_index()
-    .rename(columns={"index": "category_name", "product_category": "count"})
-)
 # ===========================
-# Agregasi persis seperti DAX Power BI
+# Agregasi persis seperti Power BI
 # ===========================
 rev_cat_pbi_style = (
-    sold_df[sold_df['sold_flag'] == 1]
+    sold_df[sold_df['sold_flag'] == 1]  # hanya yang sold_flag = 1
     .groupby('product_category')['product_retail_price']
     .sum()
     .reset_index()
@@ -110,12 +91,10 @@ rev_cat_pbi_style = (
 )
 
 # ===========================
-# Visualisasi (Bar Chart)
+# Visualisasi (Top 10)
 # ===========================
-import plotly.express as px
-
 fig2 = px.bar(
-    rev_cat_pbi_style,
+    rev_cat_pbi_style.head(10),  # hanya top 10
     x='product_retail_price',
     y='product_category',
     orientation='h',
@@ -123,7 +102,6 @@ fig2 = px.bar(
 )
 
 st.plotly_chart(fig2, use_container_width=True)
-
 
 # =====================
 # Revenue by Category
