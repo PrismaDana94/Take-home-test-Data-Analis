@@ -15,6 +15,9 @@ st.markdown("Analisis inventory dan penjualan untuk mendapatkan insight actionab
 # Pastikan file inventory_clean.parquet ada di repo / path yang sesuai
 df = pd.read_parquet("inventory_clean.parquet")
 
+# Konversi kolom tanggal
+df['sold_at'] = pd.to_datetime(df['sold_at'], errors='coerce')
+
 # Tambahan kolom
 df['year'] = df['sold_at'].dt.year
 df['revenue'] = df['product_retail_price']
