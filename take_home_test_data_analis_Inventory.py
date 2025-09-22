@@ -135,24 +135,20 @@ st.dataframe(brand_perf.sort_values('Total_Revenue', ascending=False).head(10))
 # Insights 
 st.subheader("📊 Insights")
 st.error("""
-- Mayoritas produk **belum terjual** (64%), potensi overstock.  
-- **Revenue 2024 turun drastis -89% YoY** dibanding 2023 → indikasi masalah supply chain / demand.  
-- **Sweaters, Suits & Sport Coats, Swim** = kontributor revenue terbesar.  
-- **Zoot** dominan dari sisi revenue, **Zumba Fitness** unggul di profit margin.  
-- Produk cepat laku: **clothing sets, skirts, leggings** (<30 hari).  
-- Produk lambat: **suits & jumpsuits** (>30 hari).  
+- Mayoritas produk *belum terjual* (±64%) → potensi overstock.  
+- *Revenue 2024 turun -89% YoY* dibanding 2023 → indikasi masalah supply chain atau demand musiman.  
+- *Jeans, Outerwear & Coats, Sweaters* = kategori revenue terbesar.  
+- *Zoot* dominan di sisi revenue; *Zumba Fitness* unggul di profit margin (>50%).  
+- Produk cepat laku: *clothing sets, skirts, leggings* (<30 hari).  
+- Produk lambat: *suits & jumpsuits* (>30 hari).  
 """)
 
 # Recommendations 
 st.subheader("✅ Recommendations")
 st.success("""
-1. **Investigasi Penurunan 2024** → analisis supply chain, demand seasonal, dan pricing strategy.  
-2. **Optimalkan Top Sellers** → fokus promosi Sweaters & produk Zoot.  
-3. **Perkuat Brand Margin Tinggi** → dorong Zumba Fitness, Zulu, LAX (margin >50%) lewat bundling & campaign.  
-4. **Inventory Management Data-Driven** → gunakan reorder point & clearance promo untuk slow-moving items.  
-""")
-
-
-
+1. *Pulihkan Revenue 2024* → investigasi supply chain, tren musiman, dan pricing strategy; jalankan kampanye marketing berbasis data.  
+2. *Optimalkan Produk Unggulan* → fokus promosi Sweaters & produk Zoot; rancang kampanye musiman.  
+3. *Perkuat Brand Margin Tinggi* → dorong Zumba Fitness, Zulu, LAX (margin >50%) lewat bundling & campaign eksklusif.  
+4. *Manajemen Inventory Data-Driven* → sesuaikan stok sesuai siklus permintaan, gunakan reorder point & clearance promo
 
 
