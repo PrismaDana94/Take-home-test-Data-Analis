@@ -21,8 +21,13 @@ df['sold_at'] = pd.to_datetime(df['sold_at'], errors='coerce')
 # Tambahan kolom
 df['year'] = df['sold_at'].dt.year
 df['revenue'] = df['product_retail_price']
-df['profit'] = df['profit_per_item']
 
+# Hitung profit_per_item kalau belum ada
+if 'profit_per_item' not in df.columns:
+    df['profit'] = df['product_retail_price'] - df['cost']
+else:
+    df['profit'] = df['profit_per_item']
+    
 # =====================
 # KPI Cards
 # =====================
