@@ -7,3 +7,4 @@ seaborn>=0.12
 pyarrow>=11.0
 pytz>=2023.3
 scikit-learn>=1.2
+gdown>=4.7.1
