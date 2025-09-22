@@ -149,6 +149,5 @@ st.success("""
 1. *Pulihkan Revenue 2024* → investigasi supply chain, tren musiman, dan pricing strategy; jalankan kampanye marketing berbasis data.  
 2. *Optimalkan Produk Unggulan* → fokus promosi Sweaters & produk Zoot; rancang kampanye musiman.  
 3. *Perkuat Brand Margin Tinggi* → dorong Zumba Fitness, Zulu, LAX (margin >50%) lewat bundling & campaign eksklusif.  
-4. *Manajemen Inventory Data-Driven* → sesuaikan stok sesuai siklus permintaan, gunakan reorder point & clearance promo
-
-
+4. *Manajemen Inventory Data-Driven* → sesuaikan stok sesuai siklus permintaan, gunakan reorder point & clearance promo untuk slow-moving items.  
+""")
