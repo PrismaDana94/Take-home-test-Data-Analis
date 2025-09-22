@@ -65,9 +65,36 @@ st.plotly_chart(fig1, use_container_width=True)
 # =====================
 # Revenue by Category
 # =====================
-rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
-fig2 = px.bar(rev_cat, x='revenue', y='product_category', orientation='h', title="Revenue by Product Category")
-st.plotly_chart(fig2, use_container_width=True)
+rev_cat = (
+    sold_df.groupby('product_category')['revenue']
+    .sum()
+    .reset_index()
+    .sort_values('revenue', ascending=False)
+    .head(10)
+)
+
+# Format label angka
+fig2 = px.bar(
+    rev_cat,
+    x='revenue',
+    y='product_category',
+    orientation='h',
+    title="Revenue by Product Category",
+    text='revenue'  # <-- Menambahkan angka
+)
+
+# Format angka agar lebih rapih (misal jadi 1.2M, 850K, dll)
+fig2.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+
+# Atur layout supaya angka tidak terpotong
+fig2.update_layout(
+    yaxis_title="Product Category",
+    xaxis_title="Revenue",
+    uniformtext_minsize=8,
+    uniformtext_mode='hide',
+    margin=dict(l=120, r=50, t=50, b=50)
+)
+
 
 
 # =====================
