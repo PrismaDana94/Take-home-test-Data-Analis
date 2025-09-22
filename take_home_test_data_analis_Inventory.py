@@ -39,19 +39,6 @@ df['sold_flag'] = df['sold_at'].notna().astype(int)
 # Dataset hanya produk yang terjual
 sold_df = df[df['sold_flag'] == 1].copy()
 
-def map_product_group(cat):
-    if cat in ["Outerwear & Coats", "Fashion Hoodies & Sweatshirts"]:
-        return "Sweaters"
-    elif cat in ["Active", "Shorts"]:
-        return "Tops & Tees"
-    elif cat in ["Pants & Capris", "Jeans"]:
-        return "Pants"
-    elif cat in ["Suits", "Blazers & Jackets", "Jumpsuits & Rompers"]:
-        return "Suits & Sport Coats"
-    else:
-        return cat
-
-df["product_group"] = df["product_category"].apply(map_product_group)
 
 # =====================
 # KPI Cards
@@ -75,18 +62,41 @@ fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Tre
 st.plotly_chart(fig1, use_container_width=True)
 
 # =====================
-# Revenue by Product Category
+# STEP 1: Mapping product_group
 # =====================
+def map_product_group(cat):
+    if cat in ["Outerwear & Coats", "Fashion Hoodies & Sweatshirts"]:
+        return "Sweaters"
+    elif cat in ["Active", "Shorts"]:
+        return "Tops & Tees"
+    elif cat in ["Pants & Capris", "Jeans"]:
+        return "Pants"
+    elif cat in ["Suits", "Blazers & Jackets", "Jumpsuits & Rompers"]:
+        return "Suits & Sport Coats"
+    else:
+        return cat
 
+df["product_group"] = df["product_category"].apply(map_product_group)
+
+# =====================
+# STEP 2: Filter sold_flag
+# =====================
+df_sold = df[df["sold_flag"] == 1]
+
+# =====================
+# STEP 3: Revenue by Product Group
+# =====================
 check_rev_group = (
-    df[df["sold_flag"] == 1]
-    .groupby("product_group")["product_retail_price"]
+    df_sold
+    .groupby("product_group", as_index=False)["product_retail_price"]
     .sum()
-    .reset_index()
     .sort_values("product_retail_price", ascending=False)
     .head(10)
 )
 
+# =====================
+# STEP 4: Plot
+# =====================
 fig2 = px.bar(
     check_rev_group,
     x="product_group",
