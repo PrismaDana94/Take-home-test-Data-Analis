@@ -39,6 +39,20 @@ df['sold_flag'] = df['sold_at'].notna().astype(int)
 # Dataset hanya produk yang terjual
 sold_df = df[df['sold_flag'] == 1].copy()
 
+def map_product_group(cat):
+    if cat in ["Outerwear & Coats", "Fashion Hoodies & Sweatshirts"]:
+        return "Sweaters"
+    elif cat in ["Active", "Shorts"]:
+        return "Tops & Tees"
+    elif cat in ["Pants & Capris", "Jeans"]:
+        return "Pants"
+    elif cat in ["Suits", "Blazers & Jackets", "Jumpsuits & Rompers"]:
+        return "Suits & Sport Coats"
+    else:
+        return cat
+
+df["product_group"] = df["product_category"].apply(map_product_group)
+
 # =====================
 # KPI Cards
 # =====================
@@ -60,16 +74,22 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
-check_rev_cat = (
+check_rev_group = (
     df[df["sold_flag"] == 1]
-    .groupby("product_category")["product_retail_price"]
+    .groupby("product_group")["product_retail_price"]
     .sum()
     .reset_index()
     .sort_values("product_retail_price", ascending=False)
 )
 
-import streamlit as st
-st.dataframe(check_rev_cat)
+fig2 = px.bar(
+    check_rev_group,
+    x="product_group",
+    y="product_retail_price",
+    title="Revenue by Product Group",
+    text_auto=".2s"
+)
+st.plotly_chart(fig2, use_container_width=True)
 
 
 # =====================
