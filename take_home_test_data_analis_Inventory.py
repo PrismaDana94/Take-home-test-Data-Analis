@@ -67,8 +67,13 @@ st.write(sold_df['product_category'].value_counts().head(30))
 # Mapping kategori biar konsisten dengan Power BI
 category_map = {
     "Outerwear & Coats": "Sweaters",
-    "Fashion Hoodies & Sweatshirts": "Sweaters"
+    "Fashion Hoodies & Sweatshirts": "Sweaters",
+    "Pants & Capris": "Pants",
+    "Suits": "Suits & Sport Coats",
+    "Blazers & Jackets": "Suits & Sport Coats",
+    "Jumpsuits & Rompers": "Suits & Sport Coats"
 }
+
 sold_df['product_category'] = sold_df['product_category'].replace(category_map)
 
 # =====================
