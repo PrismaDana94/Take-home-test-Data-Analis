@@ -74,19 +74,24 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
+# =====================
+# Revenue by Product Category
+# =====================
+
 check_rev_group = (
     df[df["sold_flag"] == 1]
     .groupby("product_group")["product_retail_price"]
     .sum()
     .reset_index()
     .sort_values("product_retail_price", ascending=False)
+    .head(10)
 )
 
 fig2 = px.bar(
     check_rev_group,
     x="product_group",
     y="product_retail_price",
-    title="Revenue by Product Group",
+    title="Revenue by Product Category",
     text_auto=".2s"
 )
 st.plotly_chart(fig2, use_container_width=True)
