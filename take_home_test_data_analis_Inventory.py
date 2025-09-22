@@ -62,9 +62,19 @@ st.plotly_chart(fig1, use_container_width=True)
 
 import plotly.express as px
 
-# ===========================
-# Mapping Kategori
-# ===========================
+# =====================
+# Clean Data
+# =====================
+df.columns = df.columns.str.strip()
+for c in df.select_dtypes(include=["object"]).columns:
+    df[c] = df[c].astype(str).str.replace("\u00a0", " ").str.strip()
+
+df["product_retail_price"] = pd.to_numeric(df["product_retail_price"], errors="coerce")
+df["sold_flag"] = pd.to_numeric(df["sold_flag"], errors="coerce").fillna(0).astype(int)
+
+# =====================
+# Category Mapping
+# =====================
 category_map = {
     "Outerwear & Coats": "Sweaters",
     "Fashion Hoodies & Sweatshirts": "Sweaters",
@@ -76,29 +86,36 @@ category_map = {
     "Blazers & Jackets": "Suits & Sport Coats",
     "Jumpsuits & Rompers": "Suits & Sport Coats"
 }
+df["product_category"] = df["product_category"].replace(category_map)
 
-sold_df['product_category'] = sold_df['product_category'].replace(category_map)
+# =====================
+# Total Revenue (Power BI Style)
+# =====================
+total_revenue = df.loc[df["sold_flag"] == 1, "product_retail_price"].sum()
+st.metric("Total Revenue (Power BI)", f"{total_revenue:,.2f}")
 
-# ===========================
-# Agregasi
-# ===========================
-rev_cat_pbi_style = (
-    sold_df[sold_df['sold_flag'] == 1]  # hanya yang sold_flag = 1
-    .groupby('product_category')['product_retail_price']
+# =====================
+# Group by Category
+# =====================
+rev_cat = (
+    df[df["sold_flag"] == 1]
+    .groupby("product_category", dropna=False)["product_retail_price"]
     .sum()
     .reset_index()
-    .sort_values('product_retail_price', ascending=False)
+    .sort_values("product_retail_price", ascending=False)
 )
 
 # =====================
-# Revenue by Category
+# Visualisasi
 # =====================
-rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index()\
-                 .sort_values('revenue', ascending=False).head(10)
-
-fig2 = px.bar(rev_cat, x='revenue', y='product_category', 
-              orientation='h', title="Revenue by Product Category (Top 10)")
-st.plotly_chart(fig2, use_container_width=True)
+fig = px.bar(
+    rev_cat.head(10),
+    x="product_retail_price",
+    y="product_category",
+    orientation="h",
+    title="Top 10 Revenue by Category (Power BI Style)"
+)
+st.plotly_chart(fig, use_container_width=True)
 
 
 # =====================
