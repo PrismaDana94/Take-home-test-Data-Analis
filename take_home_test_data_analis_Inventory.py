@@ -60,10 +60,21 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
-# Debug: tampilkan daftar kategori unik
-st.subheader("Debug - Product Categories (Top 30)")
-st.write(sold_df['product_category'].value_counts().head(30))
+# ===========================
+# Debug: tampilkan kategori unik sebelum & sesudah mapping
+# ===========================
+st.subheader("Debug - Product Categories Sebelum Mapping (Top 30)")
+st.dataframe(
+    sold_df['product_category']
+    .value_counts(dropna=False)
+    .head(30)
+    .reset_index()
+    .rename(columns={'index': 'product_category', 'product_category': 'count'})
+)
 
+# ===========================
+# Mapping kategori
+# ===========================
 category_map = {
     # Gabung ke Sweaters
     "Outerwear & Coats": "Sweaters",
@@ -83,7 +94,32 @@ category_map = {
     "Jumpsuits & Rompers": "Suits & Sport Coats"
 }
 
+# Pastikan tidak error jika ada NaN di kolom product_category
+sold_df['product_category'] = sold_df['product_category'].fillna("Unknown")
 sold_df['product_category'] = sold_df['product_category'].replace(category_map)
+
+# ===========================
+# Debug setelah mapping
+# ===========================
+st.subheader("Debug - Product Categories Setelah Mapping (Top 30)")
+st.dataframe(
+    sold_df['product_category']
+    .value_counts()
+    .head(30)
+    .reset_index()
+    .rename(columns={'index': 'product_category', 'product_category': 'count'})
+)
+# Agregasi persis seperti DAX Power BI
+rev_cat_pbi_style = (sold_df[sold_df['sold_flag'] == 1]
+                     .groupby('product_category')['product_retail_price']
+                     .sum()
+                     .reset_index()
+                     .sort_values('product_retail_price', ascending=False))
+
+fig2 = px.bar(rev_cat_pbi_style, x='product_retail_price', y='product_category',
+              orientation='h', title="Revenue by Product Category (Top 10) [Power BI Style]")
+
+st.plotly_chart(fig2, use_container_width=True)
 
 
 # =====================
