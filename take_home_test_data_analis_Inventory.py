@@ -24,12 +24,15 @@ df['revenue'] = df['product_retail_price']
 df['profit'] = df['product_retail_price'] - df['cost']
 df['sold_flag'] = df['sold_at'].notna().astype(int)
 
+# Dataset hanya produk yang terjual
+sold_df = df[df['sold_flag'] == 1].copy()
+
 # =====================
 # KPI Cards
 # =====================
-total_revenue = df['revenue'].sum()
-total_profit = df['profit'].sum()
-sold_count = df['sold_flag'].sum()
+total_revenue = sold_df['revenue'].sum()
+total_profit = sold_df['profit'].sum()
+sold_count = sold_df['sold_flag'].sum()
 inventory_on_hand = len(df) - sold_count
 
 col1, col2, col3, col4 = st.columns(4)
@@ -41,28 +44,28 @@ col4.metric("Inventory On Hand", f"{inventory_on_hand:,}")
 # =====================
 # Revenue Trend by Year
 # =====================
-rev_year = df.groupby('year')['revenue'].sum().reset_index()
+rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
 # =====================
 # Revenue by Category
 # =====================
-rev_cat = df.groupby('product_category')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
+rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
 fig2 = px.bar(rev_cat, x='revenue', y='product_category', orientation='h', title="Revenue by Product Category")
 st.plotly_chart(fig2, use_container_width=True)
 
 # =====================
 # Revenue by Product Name (Top 10)
 # =====================
-rev_prod = df.groupby('product_name')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
+rev_prod = sold_df.groupby('product_name')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
 fig3 = px.bar(rev_prod, x='revenue', y='product_name', orientation='h', title="Revenue by Product Name")
 st.plotly_chart(fig3, use_container_width=True)
 
 # =====================
 # Brand Performance Table
 # =====================
-brand_perf = df.groupby('product_brand').agg(
+brand_perf = sold_df.groupby('product_brand').agg(
     Total_Revenue=('revenue','sum'),
     Total_Profit=('profit','sum')
 ).reset_index()
@@ -70,6 +73,7 @@ brand_perf['Profit_Margin'] = (brand_perf['Total_Profit']/brand_perf['Total_Reve
 
 st.subheader("Brand Performance")
 st.dataframe(brand_perf.sort_values('Total_Revenue', ascending=False).head(10))
+
 
 # Insights 
 st.subheader("📊 Insights")
