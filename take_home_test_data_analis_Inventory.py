@@ -80,7 +80,7 @@ category_map = {
 sold_df['product_category'] = sold_df['product_category'].replace(category_map)
 
 # ===========================
-# Agregasi persis seperti Power BI
+# Agregasi
 # ===========================
 rev_cat_pbi_style = (
     sold_df[sold_df['sold_flag'] == 1]  # hanya yang sold_flag = 1
@@ -89,19 +89,6 @@ rev_cat_pbi_style = (
     .reset_index()
     .sort_values('product_retail_price', ascending=False)
 )
-
-# ===========================
-# Visualisasi (Top 10)
-# ===========================
-fig2 = px.bar(
-    rev_cat_pbi_style.head(10),  # hanya top 10
-    x='product_retail_price',
-    y='product_category',
-    orientation='h',
-    title="Revenue by Product Category (Top 10) [Power BI Style]"
-)
-
-st.plotly_chart(fig2, use_container_width=True)
 
 # =====================
 # Revenue by Category
