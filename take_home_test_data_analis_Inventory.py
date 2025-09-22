@@ -61,50 +61,14 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
-# =====================
-# STEP 1: Mapping product_group
-# =====================
-def map_product_group(cat):
-    if cat in ["Outerwear & Coats", "Fashion Hoodies & Sweatshirts"]:
-        return "Sweaters"
-    elif cat in ["Active", "Shorts"]:
-        return "Tops & Tees"
-    elif cat in ["Pants & Capris", "Jeans"]:
-        return "Pants"
-    elif cat in ["Suits", "Blazers & Jackets", "Jumpsuits & Rompers"]:
-        return "Suits & Sport Coats"
-    else:
-        return cat
-
-df["product_group"] = df["product_category"].apply(map_product_group)
 
 # =====================
-# STEP 2: Filter sold_flag
+# Revenue by Category
 # =====================
-df_sold = df[df["sold_flag"] == 1]
-
-# =====================
-# STEP 3: Revenue by Product Group
-# =====================
-check_rev_group = (
-    df_sold
-    .groupby("product_group", as_index=False)["product_retail_price"]
-    .sum()
-    .sort_values("product_retail_price", ascending=False)
-    .head(10)
-)
-
-# =====================
-# STEP 4: Plot
-# =====================
-fig2 = px.bar(
-    check_rev_group,
-    x="product_group",
-    y="product_retail_price",
-    title="Revenue by Product Category",
-    text_auto=".2s"
-)
+rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
+fig2 = px.bar(rev_cat, x='revenue', y='product_category', orientation='h', title="Revenue by Product Category")
 st.plotly_chart(fig2, use_container_width=True)
+
 
 # =====================
 # Revenue by Product Name (Top 10)
