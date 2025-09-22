@@ -61,30 +61,25 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
-
-
 # =====================
 # Revenue by Category
 # =====================
-rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index()\
-                 .sort_values('revenue', ascending=False).head(10)
-
-fig2 = px.bar(
-    rev_cat, 
-    x='revenue', 
-    y='product_category', 
-    orientation='h', 
-    title="Revenue by Product Category",
-    text='revenue'   # tambahkan kolom angka
+rev_cat = (
+    sold_df.groupby('product_category')["revenue"]
+    .sum()
+    .reset_index()
+    .sort_values('revenue', ascending=False)
+    .head(10)
 )
 
-# Format angka biar lebih rapi (misal dalam jutaan)
-fig2.update_traces(texttemplate='%{text:.2s}', textposition='outside')
-
-# Tambahkan margin biar label tidak kepotong
-fig2.update_layout(yaxis=dict(title="Product Category"),
-                   xaxis=dict(title="Total Revenue"),
-                   margin=dict(l=100, r=50, t=50, b=50))
+fig2 = px.bar(
+    rev_cat,
+    x='revenue',
+    y='product_category',
+    orientation='h',
+    title="Revenue by Product Category",
+    text_auto=".2s"   # <--- angka otomatis di dalam bar
+)
 
 st.plotly_chart(fig2, use_container_width=True)
 
