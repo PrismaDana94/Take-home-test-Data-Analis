@@ -60,62 +60,16 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
-import plotly.express as px
-
-# =====================
-# Clean Data
-# =====================
-df.columns = df.columns.str.strip()
-for c in df.select_dtypes(include=["object"]).columns:
-    df[c] = df[c].astype(str).str.replace("\u00a0", " ").str.strip()
-
-df["product_retail_price"] = pd.to_numeric(df["product_retail_price"], errors="coerce")
-df["sold_flag"] = pd.to_numeric(df["sold_flag"], errors="coerce").fillna(0).astype(int)
-
-# =====================
-# Category Mapping
-# =====================
-category_map = {
-    "Outerwear & Coats": "Sweaters",
-    "Fashion Hoodies & Sweatshirts": "Sweaters",
-    "Active": "Tops & Tees",
-    "Shorts": "Tops & Tees",
-    "Pants & Capris": "Pants",
-    "Jeans": "Pants",
-    "Suits": "Suits & Sport Coats",
-    "Blazers & Jackets": "Suits & Sport Coats",
-    "Jumpsuits & Rompers": "Suits & Sport Coats"
-}
-df["product_category"] = df["product_category"].replace(category_map)
-
-# =====================
-# Total Revenue 
-# =====================
-total_revenue = df.loc[df["sold_flag"] == 1, "product_retail_price"].sum()
-st.metric("Total Revenue (Power BI)", f"{total_revenue:,.2f}")
-
-# =====================
-# Group by Category
-# =====================
-rev_cat = (
+check_rev_cat = (
     df[df["sold_flag"] == 1]
-    .groupby("product_category", dropna=False)["product_retail_price"]
+    .groupby("product_category")["product_retail_price"]
     .sum()
     .reset_index()
     .sort_values("product_retail_price", ascending=False)
 )
 
-# =====================
-# Visualisasi
-# =====================
-fig = px.bar(
-    rev_cat.head(10),
-    x="product_retail_price",
-    y="product_category",
-    orientation="h",
-    title="Top 10 Revenue by Category (Power BI Style)"
-)
-st.plotly_chart(fig, use_container_width=True)
+import streamlit as st
+st.dataframe(check_rev_cat)
 
 
 # =====================
