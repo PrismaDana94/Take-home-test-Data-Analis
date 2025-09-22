@@ -64,17 +64,27 @@ st.plotly_chart(fig1, use_container_width=True)
 st.subheader("Debug - Product Categories (Top 30)")
 st.write(sold_df['product_category'].value_counts().head(30))
 
-# Mapping kategori biar konsisten dengan Power BI
 category_map = {
+    # Gabung ke Sweaters
     "Outerwear & Coats": "Sweaters",
     "Fashion Hoodies & Sweatshirts": "Sweaters",
+
+    # Gabung ke Tops & Tees
+    "Active": "Tops & Tees",
+    "Shorts": "Tops & Tees",
+
+    # Gabung ke Pants
     "Pants & Capris": "Pants",
+    "Jeans": "Pants",
+
+    # Gabung ke Suits & Sport Coats
     "Suits": "Suits & Sport Coats",
     "Blazers & Jackets": "Suits & Sport Coats",
     "Jumpsuits & Rompers": "Suits & Sport Coats"
 }
 
 sold_df['product_category'] = sold_df['product_category'].replace(category_map)
+
 
 # =====================
 # Revenue by Category
