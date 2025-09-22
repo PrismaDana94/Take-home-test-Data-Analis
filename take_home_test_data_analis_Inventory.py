@@ -71,25 +71,24 @@ brand_perf['Profit_Margin'] = (brand_perf['Total_Profit']/brand_perf['Total_Reve
 st.subheader("Brand Performance")
 st.dataframe(brand_perf.sort_values('Total_Revenue', ascending=False).head(10))
 
-# =====================
-# Insights & Recommendations
-# =====================
+# Insights 
 st.subheader("📊 Insights")
-st.markdown("""
-- Mayoritas produk **belum terjual** (64%), potensi overstock.
-- **Revenue 2024 turun drastis -89% YoY** dibanding 2023 → indikasi masalah supply chain / demand.
-- **Sweaters, Suits & Sport Coats, Swim** = kontributor revenue terbesar.
-- **Zoot** dominan dari sisi revenue, **Zumba Fitness** unggul di profit margin.
+st.error("""
+- Mayoritas produk **belum terjual** (64%), potensi overstock.  
+- **Revenue 2024 turun drastis -89% YoY** dibanding 2023 → indikasi masalah supply chain / demand.  
+- **Sweaters, Suits & Sport Coats, Swim** = kontributor revenue terbesar.  
+- **Zoot** dominan dari sisi revenue, **Zumba Fitness** unggul di profit margin.  
 - Produk cepat laku: **clothing sets, skirts, leggings** (<30 hari).  
-  Produk lambat: **suits & jumpsuits** (>30 hari).
+- Produk lambat: **suits & jumpsuits** (>30 hari).  
 """)
 
+# Recommendations 
 st.subheader("✅ Recommendations")
 st.success("""
-1. **Investigasi Penurunan 2024** → analisis supply chain, demand seasonal, dan pricing strategy.
-2. **Optimalkan Top Sellers** → fokus promosi Sweaters & produk Zoot.
-3. **Perkuat Brand Margin Tinggi** → dorong Zumba Fitness, Zulu, LAX (margin >50%) lewat bundling & campaign.
-4. **Inventory Management Data-Driven** → gunakan reorder point & clearance promo untuk slow-moving items.
+1. **Investigasi Penurunan 2024** → analisis supply chain, demand seasonal, dan pricing strategy.  
+2. **Optimalkan Top Sellers** → fokus promosi Sweaters & produk Zoot.  
+3. **Perkuat Brand Margin Tinggi** → dorong Zumba Fitness, Zulu, LAX (margin >50%) lewat bundling & campaign.  
+4. **Inventory Management Data-Driven** → gunakan reorder point & clearance promo untuk slow-moving items.  
 """)
 
 
