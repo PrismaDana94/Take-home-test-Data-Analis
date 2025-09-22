@@ -63,6 +63,8 @@ st.plotly_chart(fig1, use_container_width=True)
 # ===========================
 # Debug kategori sebelum mapping
 # ===========================
+
+# Debug sebelum mapping
 st.subheader("Debug - Product Categories Sebelum Mapping (Top 30)")
 st.dataframe(
     sold_df['product_category']
@@ -72,39 +74,30 @@ st.dataframe(
     .rename(columns={"index": "category_name", "product_category": "count"})
 )
 
-# ===========================
-# Mapping kategori
-# ===========================
+# Mapping
 category_map = {
     "Outerwear & Coats": "Sweaters",
     "Fashion Hoodies & Sweatshirts": "Sweaters",
-
     "Active": "Tops & Tees",
     "Shorts": "Tops & Tees",
-
     "Pants & Capris": "Pants",
     "Jeans": "Pants",
-
     "Suits": "Suits & Sport Coats",
     "Blazers & Jackets": "Suits & Sport Coats",
     "Jumpsuits & Rompers": "Suits & Sport Coats"
 }
-
 sold_df['product_category'] = sold_df['product_category'].fillna("Unknown")
 sold_df['product_category'] = sold_df['product_category'].replace(category_map)
 
-# ===========================
-# Debug kategori setelah mapping
-# ===========================
+# Debug setelah mapping
 st.subheader("Debug - Product Categories Setelah Mapping (Top 30)")
 st.dataframe(
     sold_df['product_category']
     .value_counts()
     .head(30)
     .reset_index()
-    .rename(columns={"index": "category_name", "product_category": "count"})
+    .rename(columns={"index": "category_name", "product_category": "count"})
 )
-
 # ===========================
 # Agregasi persis seperti DAX Power BI
 # ===========================
