@@ -60,42 +60,28 @@ rev_year = sold_df.groupby('year')['revenue'].sum().reset_index()
 fig1 = px.line(rev_year, x='year', y='revenue', markers=True, title="Revenue Trend by Year")
 st.plotly_chart(fig1, use_container_width=True)
 
-# 1) Total revenue keseluruhan
-print("TOTAL revenue (sold_df):", sold_df['revenue'].sum())
+# Debug: tampilkan daftar kategori unik
+st.subheader("Debug - Product Categories (Top 30)")
+st.write(sold_df['product_category'].value_counts().head(30))
 
-# 2) Revenue per category (top 20, tanpa head cut)
-rev_cat_all = sold_df.groupby('product_category', dropna=False)['revenue'].sum().reset_index()
-rev_cat_all = rev_cat_all.sort_values('revenue', ascending=False)
-print(rev_cat_all.head(20))
+# Mapping kategori biar konsisten dengan Power BI
+category_map = {
+    "Outerwear & Coats": "Sweaters",
+    "Fashion Hoodies & Sweatshirts": "Sweaters"
+}
+sold_df['product_category'] = sold_df['product_category'].replace(category_map)
 
-# 3) Cek jumlah baris, duplicates, nulls
-print("rows:", len(sold_df))
-print("nulls in revenue:", sold_df['revenue'].isna().sum())
-print("nulls in category:", sold_df['product_category'].isna().sum())
+# =====================
+# Revenue by Category
+# =====================
+rev_cat = sold_df.groupby('product_category')['revenue'].sum().reset_index()\
+                 .sort_values('revenue', ascending=False).head(10)
 
-# 4) Cek apakah revenue dihitung price * qty vs kolom revenue
-if all(col in sold_df.columns for col in ['price','quantity']):
-    calc_sum = (sold_df['price'] * sold_df['quantity']).sum()
-    print("SUM(price*quantity):", calc_sum)
-    print("SUM(revenue):", sold_df['revenue'].sum())
-else:
-    print("Kolom price/quantity tidak ada — lewati cek ini.")
+fig2 = px.bar(rev_cat, x='revenue', y='product_category', 
+              orientation='h', title="Revenue by Product Category (Top 10)")
+st.plotly_chart(fig2, use_container_width=True)
 
-# 5) Normalisasi nama kategori (whitespace/case)
-cats = sold_df['product_category'].astype(str).str.strip().str.lower().value_counts().head(50)
-print("Top categories (normalized):")
-print(cats)
 
-# 6) Bandingkan dengan file yang dipakai Power BI (jika kamu punya path)
-# df_powerbi = pd.read_csv('powerbi_export.csv')  # contoh; load file yang sama seperti di Power BI
-# print(df_powerbi.groupby('product_category')['revenue'].sum().sort_values(ascending=False).head(20))
-
-# 7) Cari baris yang mungkin double counted (contoh sederhana)
-dup_keys = ['order_id','transaction_id']  # ganti sesuai kolom unik di datasetmu
-for k in dup_keys:
-    if k in sold_df.columns:
-        dups = sold_df.duplicated(subset=[k], keep=False).sum()
-        print(f"duplicates by {k}:", dups)
 # =====================
 # Revenue by Product Name (Top 10)
 # =====================
