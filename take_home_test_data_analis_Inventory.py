@@ -69,7 +69,7 @@ st.dataframe(
     .value_counts(dropna=False)
     .head(30)
     .reset_index()
-    .rename(columns={"index": "product_category", "product_category": "count"})
+    .rename(columns={"index": "category_name", "product_category": "count"})
 )
 
 # ===========================
@@ -102,7 +102,7 @@ st.dataframe(
     .value_counts()
     .head(30)
     .reset_index()
-    .rename(columns={"index": "product_category", "product_category": "count"})
+    .rename(columns={"index": "category_name", "product_category": "count"})
 )
 
 # ===========================
