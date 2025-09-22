@@ -100,7 +100,7 @@ st.plotly_chart(fig2, use_container_width=True)
 # =====================
 # Revenue by Product Name
 # =====================
-rev_prod = sold_df.groupby('product_name')['revenue'].sum().reset_index().sort_values('revenue', ascending=False).head(10)
+rev_prod = sold_df.groupby('product_name')['revenue'].sum().reset_index().sort_values('revenue', ascending=False)
 fig3 = px.bar(rev_prod, x='revenue', y='product_name', orientation='h', title="Revenue by Product Name")
 st.plotly_chart(fig3, use_container_width=True)
 
