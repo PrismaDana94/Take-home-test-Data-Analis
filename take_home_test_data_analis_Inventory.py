@@ -135,19 +135,19 @@ st.dataframe(brand_perf.sort_values('Total_Revenue', ascending=False).head(10))
 # Insights 
 st.subheader("📊 Insights")
 st.error("""
-- Mayoritas produk *belum terjual* (±64%) → potensi overstock.  
-- *Revenue 2024 turun -89% YoY* dibanding 2023 → indikasi masalah supply chain atau demand musiman.  
-- *Jeans, Outerwear & Coats, Sweaters* = kategori revenue terbesar.  
-- *Zoot* dominan di sisi revenue; *Zumba Fitness* unggul di profit margin (>50%).  
-- Produk cepat laku: *clothing sets, skirts, leggings* (<30 hari).  
-- Produk lambat: *suits & jumpsuits* (>30 hari).  
+- Inventory on Hand (313k) jauh lebih tinggi dibanding total penjualan (177k) → ±64% stok belum terjual → indikasi overstock.  
+- Revenue 2024 turun drastis (-89% YoY vs 2023: 5.1M → 560k) → kemungkinan masalah supply chain, demand musiman, atau pricing strategy.  
+- Kategori dengan revenue terbesar: Outerwear & Coats (1.3M), Jeans (1.2M), Sweaters (820k).  
+- Brand dengan revenue tertinggi: Calvin Klein (202k), Diesel (192k), Carhartt (178k).  
+- Brand dengan margin tertinggi: Tommy Hilfiger (54.86%), The North Face (54.66%), Columbia (54.29%).  
+- Produk revenue tertinggi: The North Face Apex Bionic Soft Shell Jacket - Men’s (23k).  
 """)
 
 # Recommendations 
 st.subheader("✅ Recommendations")
 st.success("""
-1. *Pulihkan Revenue 2024* → investigasi supply chain, tren musiman, dan pricing strategy; jalankan kampanye marketing berbasis data.  
-2. *Optimalkan Produk Unggulan* → fokus promosi Sweaters & produk Zoot; rancang kampanye musiman.  
-3. *Perkuat Brand Margin Tinggi* → dorong Zumba Fitness, Zulu, LAX (margin >50%) lewat bundling & campaign eksklusif.  
-4. *Manajemen Inventory Data-Driven* → sesuaikan stok sesuai siklus permintaan, gunakan reorder point & clearance promo untuk slow-moving items.  
+1. *Pulihkan Revenue 2024* → investigasi penyebab drop besar (supply chain vs demand seasonal); jalankan strategi pricing & kampanye marketing berbasis data.  
+2. *Optimalkan Produk Unggulan* → fokus promosi pada Outerwear & Coats, Jeans, dan Sweaters; buat kampanye musiman (contoh: jacket & coat di musim dingin).  
+3. *Perkuat Brand Margin Tinggi* → dorong brand Tommy Hilfiger, The North Face, dan Columbia (margin >54%) lewat bundling, loyalty program, atau campaign premium.  
+4. *Manajemen Inventory Data-Driven* → sesuaikan stok dengan demand cycle; gunakan clearance promo untuk slow-moving items dan terapkan metode reorder point agar stok lebih efisien.  
 """)
